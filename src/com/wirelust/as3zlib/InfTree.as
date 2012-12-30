@@ -33,7 +33,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package com.wirelust.as3zlib {
-final class InfTree{
+internal final class InfTree{
 
 	static private const MANY:int=1440;
 	

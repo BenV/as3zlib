@@ -253,34 +253,34 @@ package com.wirelust.as3zlib {
 		// Stop searching when current match exceeds this
 		public var nice_match: int;
 
-		var dyn_ltree: Array;
+		internal var dyn_ltree: Array;
 		// literal and length tree
-		var dyn_dtree: Array;
+		internal var dyn_dtree: Array;
 		// distance tree
-		var bl_tree: Array;
+		internal var bl_tree: Array;
 		// Huffman tree for bit lengths
-		var l_desc: Tree = new Tree();
+		internal var l_desc: Tree = new Tree();
 		// desc for literal tree
-		var d_desc: Tree = new Tree();
+		internal var d_desc: Tree = new Tree();
 		// desc for distance tree
-		var bl_desc: Tree = new Tree();
+		internal var bl_desc: Tree = new Tree();
 		// desc for bit length tree
 		// number of codes at each bit length for an optimal tree
-		var bl_count: Array = new Array();
+		internal var bl_count: Array = new Array();
 
 		// heap used to build the Huffman trees
-		var heap: Array = new Array();
+		internal var heap: Array = new Array();
 
-		var heap_len: int;
+		internal var heap_len: int;
 		// number of elements in the heap
-		var heap_max: int;
+		internal var heap_max: int;
 		// element of largest frequency
 		// The sons of heap[n] are heap[2*n] and heap[2*n+1]. heap[0] is not used.
 		// The same heap array is used to build all trees.
 		// Depth of each subtree used as tie breaker for trees of equal frequency
-		var depth: Array = new Array();
+		internal var depth: Array = new Array();
 
-		var l_buf: int;
+		internal var l_buf: int;
 		// index for literals or lengths */
 		// Size of match buffer for literals/lengths.	 There are 4 reasons for
 		// limiting lit_bufsize to 64K:
@@ -299,30 +299,30 @@ package com.wirelust.as3zlib {
 		//	   fast adaptation but have of course the overhead of transmitting
 		//	   trees more frequently.
 		//	 - I can't count above 4
-		var lit_bufsize: int;
+		internal var lit_bufsize: int;
 
-		var last_lit: int;
+		internal var last_lit: int;
 		// running index in l_buf
 		// Buffer for distances. To simplify the code, d_buf and l_buf have
 		// the same number of elements. To use different lengths, an extra flag
 		// array would be necessary.
-		var d_buf: int;
+		internal var d_buf: int;
 		// index of pendig_buf
-		var opt_len: int;
+		internal var opt_len: int;
 		// bit length of current block with optimal trees
-		var static_len: int;
+		internal var static_len: int;
 		// bit length of current block with static trees
-		var matches: int;
+		internal var matches: int;
 		// number of string matches in current block
-		var last_eob_len: int;
+		internal var last_eob_len: int;
 		// bit length of EOB code for last block
 		// Output buffer. bits are inserted starting at the bottom (least
 		// significant bits).
-		var bi_buf: Number;
+		internal var bi_buf: Number;
 
 		// Number of valid bits in bi_buf.	All bits above the last valid bit
 		// are always zero.
-		var bi_valid: int;
+		internal var bi_valid: int;
 
 		public function Deflate() : void {
 			dyn_ltree = new Array();
@@ -332,7 +332,7 @@ package com.wirelust.as3zlib {
 			// Huffman tree for bit lengths
 		}
 
-		function lm_init() : void {
+		internal function lm_init() : void {
 			window_size = 2 * w_size;
 
 			head[hash_size - 1] = 0;
@@ -355,7 +355,7 @@ package com.wirelust.as3zlib {
 		}
 
 		// Initialize the tree data structures for a new zlib stream.
-		function tr_init() : void {
+		internal function tr_init() : void {
 
 			l_desc.dyn_tree = dyn_ltree;
 			l_desc.stat_desc = StaticTree.static_l_desc;
@@ -374,11 +374,12 @@ package com.wirelust.as3zlib {
 			init_block();
 		}
 
-		function init_block() : void {
+		internal function init_block() : void {
 			// Initialize the trees.
-			for (var i: int = 0; i < L_CODES; i++) dyn_ltree[i * 2] = 0;
-			for (var i: int = 0; i < D_CODES; i++) dyn_dtree[i * 2] = 0;
-			for (var i: int = 0; i < BL_CODES; i++) bl_tree[i * 2] = 0;
+            var i:int;
+			for (i = 0; i < L_CODES; i++) dyn_ltree[i * 2] = 0;
+			for (i = 0; i < D_CODES; i++) dyn_dtree[i * 2] = 0;
+			for (i = 0; i < BL_CODES; i++) bl_tree[i * 2] = 0;
 
 			dyn_ltree[END_BLOCK * 2] = 1;
 			opt_len = static_len = 0;
@@ -391,7 +392,7 @@ package com.wirelust.as3zlib {
 		// two sons).
 		// tree=the tree to restore
 		// k=node to move down
-		function pqdownheap(tree: Array, k: int) : void {
+		internal function pqdownheap(tree: Array, k: int) : void {
 			var v: int = heap[k];
 			var j: int = k << 1;
 			// left son of k
@@ -414,7 +415,7 @@ package com.wirelust.as3zlib {
 			heap[k] = v;
 		}
 
-		static function smaller(tree: Array, n: int, m: int, depth: Array) : Boolean {
+		static internal function smaller(tree: Array, n: int, m: int, depth: Array) : Boolean {
 			var tn2: Number = tree[n * 2];
 			var tm2: Number = tree[m * 2];
 			return (tn2 < tm2 ||
@@ -423,7 +424,7 @@ package com.wirelust.as3zlib {
 
 		// Scan a literal or distance tree to determine the frequencies of the codes
 		// in the bit length tree.
-		function scan_tree(tree: Array,
+		internal function scan_tree(tree: Array,
 		// the tree to be scanned
 		max_code: int
 		// and its largest code of non zero frequency
@@ -784,7 +785,7 @@ package com.wirelust.as3zlib {
 		// binary if more than 20% of the bytes are <= 6 or >= 128, ascii otherwise.
 		// IN assertion: the fields freq of dyn_ltree are set and the total of all
 		// frequencies does not exceed 64K (to fit in an int on 16 bit machines).
-		function set_data_type() : void {
+		internal function set_data_type() : void {
 			var n: int = 0;
 			var ascii_freq: int = 0;
 			var bin_freq: int = 0;
@@ -830,7 +831,7 @@ package com.wirelust.as3zlib {
 
 		// Copy a stored block, storing first the length and its
 		// one's complement if requested.
-		function copy_block(buf: int,
+		internal function copy_block(buf: int,
 		// the input data
 		len: int,
 		// its length
@@ -855,7 +856,7 @@ package com.wirelust.as3zlib {
 			put_byte(window, buf, len);
 		}
 
-		function flush_block_only(eof: Boolean) : void {
+		internal function flush_block_only(eof: Boolean) : void {
 			_tr_flush_block(block_start >= 0 ? block_start: -1,
 			strstart - block_start,
 			eof);
@@ -936,15 +937,15 @@ package com.wirelust.as3zlib {
 
 		// Determine the best encoding for the current block: dynamic trees, static
 		// trees or store, and output the encoded block to the zip file.
-		function _tr_flush_block(buf: int,
+		internal function _tr_flush_block(buf: int,
 		// input block, or NULL if too old
 		stored_len: int,
 		// length of input block
 		eof: Boolean
 		// true if this is the last block for a file
 		) : void {
-			var opt_lenb: int,
-			static_lenb;
+			var opt_lenb:int,
+			static_lenb:int;
 			// opt_len and static_len in bytes
 			var max_blindex: int = 0;
 			// index of last bit length code of non zero freq
@@ -1011,9 +1012,9 @@ package com.wirelust.as3zlib {
 		//	  At least one byte has been read, or avail_in == 0; reads are
 		//	  performed for at least two bytes (required for the zip translate_eol
 		//	  option -- not supported here).
-		function fill_window() : void {
+		internal function fill_window() : void {
 			var n: int,
-			m;
+			m:int;
 			var p: int;
 			var more: int;
 			// Amount of free space at the end of the window.
@@ -1275,7 +1276,7 @@ package com.wirelust.as3zlib {
 					do {
 						if (++strstart <= max_insert) {
 							ins_h = (((ins_h) << hash_shift) ^ (window[strstart + (MIN_MATCH - 1)] & 0xff)) & hash_mask;
-							
+
 							//prev[strstart&w_mask]=hash_head=head[ins_h];
 							hash_head=(head[ins_h]&0xffff);
 							prev[strstart&w_mask]=head[ins_h];
@@ -1328,7 +1329,7 @@ package com.wirelust.as3zlib {
 			return flush == Z_FINISH ? FinishDone: BlockDone;
 		}
 
-		function longest_match(cur_match: int) : int {
+		internal function longest_match(cur_match: int) : int {
 			var chain_length: int = max_chain_length;	// max hash chain length
 			var scan: int = strstart;					// current string
 			var match: int;								// matched string
@@ -1398,7 +1399,7 @@ package com.wirelust.as3zlib {
 					scan_end = window[scan + best_len];
 				}
 		    } while ((cur_match = (prev[cur_match & wmask]&0xffff)) > limit && --chain_length != 0);
-			
+
 			if (best_len <= lookahead) return best_len;
 			return lookahead;
 		}
@@ -1469,7 +1470,7 @@ package com.wirelust.as3zlib {
 			return deflateReset(strm);
 		}
 
-		function deflateReset(strm: ZStream) : int {
+		internal function deflateReset(strm: ZStream) : int {
 			strm.total_in = strm.total_out = 0;
 			strm.msg = null;
 			//
@@ -1477,7 +1478,7 @@ package com.wirelust.as3zlib {
 
 			pending = 0;
 			pending_out = 0;
-			
+
 			pending_buf = new ByteArray();
 
 			if (noheader < 0) {
@@ -1494,7 +1495,7 @@ package com.wirelust.as3zlib {
 			return Z_OK;
 		}
 
-		function deflateEnd() : int {
+		internal function deflateEnd() : int {
 			if (status != INIT_STATE && status != BUSY_STATE && status != FINISH_STATE) {
 				return Z_STREAM_ERROR;
 			}
@@ -1508,7 +1509,7 @@ package com.wirelust.as3zlib {
 			return status == BUSY_STATE ? Z_DATA_ERROR: Z_OK;
 		}
 
-		function deflateParams(strm: ZStream, _level: int, _strategy: int) : int {
+		internal function deflateParams(strm: ZStream, _level: int, _strategy: int) : int {
 			var err: int = Z_OK;
 
 			if (_level == Z_DEFAULT_COMPRESSION) {
@@ -1536,7 +1537,7 @@ package com.wirelust.as3zlib {
 			return err;
 		}
 
-		function deflateSetDictionary(strm: ZStream, dictionary:ByteArray, dictLength: int) : int {
+		internal function deflateSetDictionary(strm: ZStream, dictionary:ByteArray, dictLength: int) : int {
 			var length: int = dictLength;
 			var index: int = 0;
 

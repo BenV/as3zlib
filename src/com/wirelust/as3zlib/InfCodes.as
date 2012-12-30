@@ -33,7 +33,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package com.wirelust.as3zlib {
-final class InfCodes {
+internal final class InfCodes {
 
 	static private const inflate_mask:Array = new Array (
 		0x00000000, 0x00000001, 0x00000003, 0x00000007, 0x0000000f,
@@ -105,7 +105,7 @@ final class InfCodes {
 		tree = null;
 	}
 
-	function proc(s:InfBlocks, z:ZStream, r:int):int { 
+	internal function proc(s:InfBlocks, z:ZStream, r:int):int { 
 		var j:int;              // temporary storage
 		var t:Array;            // temporary pointer
 		var tindex:int;         // temporary pointer

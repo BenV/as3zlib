@@ -33,7 +33,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package com.wirelust.as3zlib {
-	final class StaticTree {
+	final internal class StaticTree {
 		static private const MAX_BITS: int = 15;
 
 		static private const BL_CODES: int = 19;
@@ -114,21 +114,21 @@ package com.wirelust.as3zlib {
 			19, 5, 11, 5, 27, 5, 7, 5, 23, 5
 		);
 
-		static var static_l_desc: StaticTree = new StaticTree(static_ltree, Tree.extra_lbits, LITERALS + 1, L_CODES, MAX_BITS);
+		internal static var static_l_desc: StaticTree = new StaticTree(static_ltree, Tree.extra_lbits, LITERALS + 1, L_CODES, MAX_BITS);
 
-		static var static_d_desc: StaticTree = new StaticTree(static_dtree, Tree.extra_dbits, 0, D_CODES, MAX_BITS);
+		internal static var static_d_desc: StaticTree = new StaticTree(static_dtree, Tree.extra_dbits, 0, D_CODES, MAX_BITS);
 
-		static var static_bl_desc: StaticTree = new StaticTree(null, Tree.extra_blbits, 0, BL_CODES, MAX_BL_BITS);
+		internal static var static_bl_desc: StaticTree = new StaticTree(null, Tree.extra_blbits, 0, BL_CODES, MAX_BL_BITS);
 
-		var static_tree: Array;
+		internal var static_tree: Array;
 		// static tree or null
-		var extra_bits: Array;
+		internal var extra_bits: Array;
 		// extra bits for each code or null
-		var extra_base: int;
+		internal var extra_base: int;
 		// base index for extra_bits
-		var elems: int;
+		internal var elems: int;
 		// max number of elements in the tree
-		var max_length: int;
+		internal var max_length: int;
 		// max bit length for the codes
 		
 		public function StaticTree(static_tree:Array, extra_bits:Array, extra_base:int, elems:int, max_length:int) {

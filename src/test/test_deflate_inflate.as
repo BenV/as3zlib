@@ -16,13 +16,13 @@ package test {
 	
 	public class test_deflate_inflate extends Sprite {
 		
-		var fileRequest:URLRequest;
-		var fileStream:URLStream;
+		internal var fileRequest:URLRequest;
+		internal var fileStream:URLStream;
 
-		var err:int;
-		var comprLen:int=40000;
-		var uncomprLen:int=comprLen;
-		var uncompr:ByteArray = new ByteArray();
+		internal var err:int;
+		internal var comprLen:int=40000;
+		internal var uncomprLen:int=comprLen;
+		internal var uncompr:ByteArray = new ByteArray();
 		
 		public function test_deflate_inflate() {
 			System.println("loading hello.txt");
@@ -73,7 +73,7 @@ package test {
 				CHECK_ERR(c_stream, err, "deflate");
 			}
 			
-			//var i:uint;
+			var i:uint;
 			//compressed.position = 0;
 			// look at the compressed array
 			//for (i=0; i<compressed.length; i++) {
@@ -122,7 +122,6 @@ package test {
 			}
 			
 			uncompr.position = 0;
-			var j:int=0;
 			for(j=0; j<uncompr.length; j++) {
 				if(uncompr.readByte() == 0) {
 					break;
