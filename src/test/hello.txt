@@ -1,0 +1,4 @@
+Hello Zip!
+This is a  test of a short file with a few sentences.
+
+Will it still be able to compress/decompress it?
