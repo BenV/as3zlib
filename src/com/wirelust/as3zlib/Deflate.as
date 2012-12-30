@@ -846,7 +846,7 @@ package com.wirelust.as3zlib {
 			if (header) {
 				put_short(len);
 				// java = put_short(short()~len);
-				put_short(len*-1);
+				put_short(~len & 0xFFFF);
 			}
 
 			//	while(len--!=0) {
